@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
+// NewCredential news a chained token credential. The exact credentials and their orders being chained are determined by the `credOpts`.
 func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedTokenCredentialOptions) (token *azidentity.ChainedTokenCredential, warnings []error, err error) {
 	var creds []azcore.TokenCredential
 	for _, option := range credsOpts {
