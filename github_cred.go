@@ -67,12 +67,12 @@ func NewGithubCredential(tenantId, clientId, requestUrl, requestToken string, op
 func (g *githubCredential) getAssertion(ctx context.Context) (string, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, g.requestUrl, http.NoBody)
 	if err != nil {
-		return "", azidentity.NewCredentialUnavailableError("getAssertion: failed to build request")
+		return "", fmt.Errorf("getAssertion: failed to build request")
 	}
 
 	query, err := url.ParseQuery(req.URL.RawQuery)
 	if err != nil {
-		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot parse URL query: %v", err))
+		return "", fmt.Errorf("getAssertion: cannot parse URL query: %v", err)
 	}
 
 	if query.Get("audience") == "" {
@@ -86,28 +86,27 @@ func (g *githubCredential) getAssertion(ctx context.Context) (string, error) {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot request token: %v", err))
+		return "", fmt.Errorf("getAssertion: cannot request token: %v", err)
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot parse response: %v", err))
+		return "", fmt.Errorf("getAssertion: cannot parse response: %v", err)
 	}
 
 	if c := resp.StatusCode; c < 200 || c > 299 {
-		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: received HTTP status %d with response: %s", resp.StatusCode, body))
+		return "", fmt.Errorf("getAssertion: received HTTP status %d with response: %s", resp.StatusCode, body)
 	}
 
 	var tokenRes struct {
-		Count *int    `json:"count"`
 		Value *string `json:"value"`
 	}
 	if err := json.Unmarshal(body, &tokenRes); err != nil {
-		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot unmarshal response: %v", err))
+		return "", fmt.Errorf("getAssertion: cannot unmarshal response: %v", err)
 	}
 
 	if tokenRes.Value == nil {
-		return "", azidentity.NewCredentialUnavailableError("getAssertion: nil JWT assertion received from Github")
+		return "", fmt.Errorf("getAssertion: nil JWT assertion received from Github")
 	}
 
 	return *tokenRes.Value, nil
