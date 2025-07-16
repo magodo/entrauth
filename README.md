@@ -1,8 +1,10 @@
 # Intro
 
-`entrauth` provides a customizable chained token credential for authenticating to Microsoft Entra ID.
+`entrauth` provides a customizable chained token credential for authenticating to Microsoft Entra ID. Based on this, it contains a sub package `aztfauth` that provides an opinionated chained token credential, which is meant to be used for Azure Terraform providers.
 
-The high level structure of supported credentials are listed below:
+# Credentials
+
+The high level structure of the basic supported credentials are listed below:
 
 ```
 Auth
@@ -30,3 +32,41 @@ Auth
          |
          +------ Azure Developer CLI delegation -----> "azure-dev-cli"
 ```
+
+Based on above, the `aztfauth` provides the following chained token credential:
+
+```
+            "assertion-plain"
+                   |
+                   v
+            "assertion-file"
+                   |
+                   v
+           "assertion-request"
+                   |
+                   v
+    ADOServiceConnectionId == "" ?
+                  / \
+               y /   \ n
+                /     \
+           Github    AzureDevOps
+                \     /
+                 \   /
+                  \ /
+                   v
+            "client-secret"
+                   |
+                   v
+          "client-certificate"
+                   |
+                   v
+           "managed-identity"
+                   |
+                   v
+              "Azure CLI"
+                   |
+                   v
+            "Azure Dev CLI"
+```
+
+Note that each token credential can be enabled/disabled.
