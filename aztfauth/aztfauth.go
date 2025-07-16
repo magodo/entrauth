@@ -1,4 +1,4 @@
-package aztftauth
+package aztfauth
 
 import (
 	"crypto"
