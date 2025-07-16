@@ -18,10 +18,10 @@ type ClientSecretCredentialOption struct {
 	azcore.ClientOptions
 	AdditionallyAllowedTenants []string
 	DisableInstanceDiscovery   bool
-	Cache azidentity.Cache
+	Cache                      azidentity.Cache
 }
 
-func (ClientSecretCredentialOption) isCredentialOption()
+func (ClientSecretCredentialOption) isCredentialOption() {}
 
 type ClientCertificateCredentialOption struct {
 	TenantId string
@@ -33,11 +33,11 @@ type ClientCertificateCredentialOption struct {
 	azcore.ClientOptions
 	AdditionallyAllowedTenants []string
 	DisableInstanceDiscovery   bool
-	Cache azidentity.Cache
+	Cache                      azidentity.Cache
 	SendCertificateChain       bool
 }
 
-func (ClientCertificateCredentialOption) isCredentialOption()
+func (ClientCertificateCredentialOption) isCredentialOption() {}
 
 type AssertionPlainCredentialOption struct {
 	TenantId  string
@@ -48,10 +48,10 @@ type AssertionPlainCredentialOption struct {
 	azcore.ClientOptions
 	AdditionallyAllowedTenants []string
 	DisableInstanceDiscovery   bool
-	Cache azidentity.Cache
+	Cache                      azidentity.Cache
 }
 
-func (AssertionPlainCredentialOption) isCredentialOption()
+func (AssertionPlainCredentialOption) isCredentialOption() {}
 
 type AssertionFileCredentialOption struct {
 	TenantId      string
@@ -62,10 +62,10 @@ type AssertionFileCredentialOption struct {
 	azcore.ClientOptions
 	AdditionallyAllowedTenants []string
 	DisableInstanceDiscovery   bool
-	Cache azidentity.Cache
+	Cache                      azidentity.Cache
 }
 
-func (AssertionFileCredentialOption) isCredentialOption()
+func (AssertionFileCredentialOption) isCredentialOption() {}
 
 type AssertionRequestType string
 
@@ -79,7 +79,7 @@ type AssertionRequestCredentialOption struct {
 	AssertionRequestCredentialPlatformOption
 }
 
-func (AssertionRequestCredentialOption) isCredentialOption()
+func (AssertionRequestCredentialOption) isCredentialOption() {}
 
 type AssertionRequestCredentialPlatformOption interface {
 	isAssertionRequestCredentialPlatformOption()
@@ -97,7 +97,7 @@ type AssertionRequestGithubCredentialOption struct {
 	DisableInstanceDiscovery   bool
 }
 
-func (AssertionRequestGithubCredentialOption) isAssertionRequestCredentialPlatformOption()
+func (AssertionRequestGithubCredentialOption) isAssertionRequestCredentialPlatformOption() {}
 
 type AssertionRequestAzureDevOpsCredentialOption struct {
 	TenantId            string
@@ -109,10 +109,10 @@ type AssertionRequestAzureDevOpsCredentialOption struct {
 	azcore.ClientOptions
 	AdditionallyAllowedTenants []string
 	DisableInstanceDiscovery   bool
-	Cache azidentity.Cache
+	Cache                      azidentity.Cache
 }
 
-func (AssertionRequestAzureDevOpsCredentialOption) isAssertionRequestCredentialPlatformOption()
+func (AssertionRequestAzureDevOpsCredentialOption) isAssertionRequestCredentialPlatformOption() {}
 
 type ManagedIdentityCredentialOption struct {
 	// Optional
@@ -120,7 +120,7 @@ type ManagedIdentityCredentialOption struct {
 	ID azidentity.ManagedIDKind
 }
 
-func (ManagedIdentityCredentialOption) isCredentialOption()
+func (ManagedIdentityCredentialOption) isCredentialOption() {}
 
 type AzureCLICredentialOption struct {
 	// Optional
@@ -129,7 +129,7 @@ type AzureCLICredentialOption struct {
 	AdditionallyAllowedTenants []string
 }
 
-func (AzureCLICredentialOption) isCredentialOption()
+func (AzureCLICredentialOption) isCredentialOption() {}
 
 type AzureDevCLICredentialOption struct {
 	// Optional
@@ -137,4 +137,4 @@ type AzureDevCLICredentialOption struct {
 	AdditionallyAllowedTenants []string
 }
 
-func (AzureDevCLICredentialOption) isCredentialOption()
+func (AzureDevCLICredentialOption) isCredentialOption() {}
