@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -59,11 +60,12 @@ func (Option) fromValueOrFile(name, v, file string) (*string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read %q from file %q: %v", name, file, err)
 	}
+	fv := strings.TrimSpace(string(b))
 	if v == "" {
-		v = string(b)
+		v = fv
 		return &v, nil
 	}
-	if v != string(b) {
+	if v != fv {
 		return nil, fmt.Errorf("mismatch value of %q between the specified value and read value from %q", name, file)
 	}
 	return &v, nil
