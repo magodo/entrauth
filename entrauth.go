@@ -136,9 +136,9 @@ func newAssertionRequestAzureDevOpsCredential(opt AssertionRequestCredentialOpti
 	if opt.Type != AssertionRequestTypeAzureDevOps {
 		return nil, fmt.Errorf("invalid type %s (expect %s)", opt.Type, AssertionRequestTypeAzureDevOps)
 	}
-	popt, ok := opt.AssertionRequestCredentialPlatformOption.(AssertionRequestAzureDevOpsCredentialOption)
+	popt, ok := opt.PlatformOption.(AssertionRequestAzureDevOpsCredentialOption)
 	if !ok {
-		return nil, fmt.Errorf("invalid platform option %T (expect %T)", opt.AssertionRequestCredentialPlatformOption, AssertionRequestAzureDevOpsCredentialOption{})
+		return nil, fmt.Errorf("invalid platform option %T (expect %T)", opt.PlatformOption, AssertionRequestAzureDevOpsCredentialOption{})
 	}
 	return azidentity.NewAzurePipelinesCredential(popt.TenantId, popt.ClientId, popt.ServiceConnectionId, popt.SystemAccessToken,
 		&azidentity.AzurePipelinesCredentialOptions{
@@ -154,9 +154,9 @@ func newAssertionRequestGithubCredential(opt AssertionRequestCredentialOption) (
 	if opt.Type != AssertionRequestTypeGithub {
 		return nil, fmt.Errorf("invalid type %s (expect %s)", opt.Type, AssertionRequestTypeGithub)
 	}
-	popt, ok := opt.AssertionRequestCredentialPlatformOption.(AssertionRequestGithubCredentialOption)
+	popt, ok := opt.PlatformOption.(AssertionRequestGithubCredentialOption)
 	if !ok {
-		return nil, fmt.Errorf("invalid platform option %T (expect %T)", opt.AssertionRequestCredentialPlatformOption, AssertionRequestGithubCredentialOption{})
+		return nil, fmt.Errorf("invalid platform option %T (expect %T)", opt.PlatformOption, AssertionRequestGithubCredentialOption{})
 	}
 	return NewGithubCredential(popt.TenantId, popt.ClientId, popt.RequestUrl, popt.RequestToken,
 		&GithubCredentialOption{

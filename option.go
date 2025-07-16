@@ -75,8 +75,8 @@ const (
 )
 
 type AssertionRequestCredentialOption struct {
-	Type AssertionRequestType
-	AssertionRequestCredentialPlatformOption
+	Type           AssertionRequestType
+	PlatformOption AssertionRequestCredentialPlatformOption
 }
 
 func (AssertionRequestCredentialOption) isCredentialOption() {}
