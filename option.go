@@ -1,6 +1,9 @@
 package entrauth
 
 import (
+	"crypto"
+	"crypto/x509"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
@@ -26,8 +29,8 @@ func (ClientSecretCredentialOption) isCredentialOption() {}
 type ClientCertificateCredentialOption struct {
 	TenantId string
 	ClientId string
-	CertData []byte // not armored
-	Password []byte
+	CertData []*x509.Certificate
+	CertKey  crypto.PrivateKey
 
 	// Optional
 	azcore.ClientOptions
@@ -95,6 +98,7 @@ type AssertionRequestGithubCredentialOption struct {
 	azcore.ClientOptions
 	AdditionallyAllowedTenants []string
 	DisableInstanceDiscovery   bool
+	Cache                      azidentity.Cache
 }
 
 func (AssertionRequestGithubCredentialOption) isAssertionRequestCredentialPlatformOption() {}

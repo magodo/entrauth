@@ -55,7 +55,14 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 				creds = append(creds, cred)
 			}
 		case ClientCertificateCredentialOption:
-			if cred, err := newClientCertificateCredential(opt); err != nil {
+			if cred, err := azidentity.NewClientCertificateCredential(opt.TenantId, opt.ClientId, opt.CertData, opt.CertKey,
+				&azidentity.ClientCertificateCredentialOptions{
+					ClientOptions:              opt.ClientOptions,
+					AdditionallyAllowedTenants: opt.AdditionallyAllowedTenants,
+					DisableInstanceDiscovery:   opt.DisableInstanceDiscovery,
+					Cache:                      opt.Cache,
+					SendCertificateChain:       opt.SendCertificateChain,
+				}); err != nil {
 				warnings = append(warnings, fmt.Errorf("failed to new client certificate credential: %v", err))
 			} else {
 				creds = append(creds, cred)
@@ -110,26 +117,7 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 	}
 
 	chained, err := azidentity.NewChainedTokenCredential(creds, option)
-	if err != nil {
-		return nil, warnings, err
-	}
-	return chained, warnings, nil
-}
-
-func newClientCertificateCredential(opt ClientCertificateCredentialOption) (*azidentity.ClientCertificateCredential, error) {
-	certs, key, err := azidentity.ParseCertificates(opt.CertData, opt.Password)
-	if err != nil {
-		return nil, err
-	}
-
-	return azidentity.NewClientCertificateCredential(opt.TenantId, opt.ClientId, certs, key,
-		&azidentity.ClientCertificateCredentialOptions{
-			ClientOptions:              opt.ClientOptions,
-			AdditionallyAllowedTenants: opt.AdditionallyAllowedTenants,
-			DisableInstanceDiscovery:   opt.DisableInstanceDiscovery,
-			Cache:                      opt.Cache,
-			SendCertificateChain:       opt.SendCertificateChain,
-		})
+	return chained, warnings, err
 }
 
 func newAssertionRequestAzureDevOpsCredential(opt AssertionRequestCredentialOption) (azcore.TokenCredential, error) {
@@ -162,6 +150,7 @@ func newAssertionRequestGithubCredential(opt AssertionRequestCredentialOption) (
 		&GithubCredentialOption{
 			ClientOptions:              popt.ClientOptions,
 			AdditionallyAllowedTenants: popt.AdditionallyAllowedTenants,
+			Cache:                      popt.Cache,
 		},
 	)
 }
