@@ -1,4 +1,4 @@
-module github.com/magodo/entrauth
+module github.com/Azure/entrauth
 
 go 1.24.1
 
